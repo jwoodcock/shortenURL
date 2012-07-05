@@ -1,5 +1,4 @@
-shortenURL Application
-======================
+#shortenURL Application#
 
 Jacques Woodcock - [jacques@kitewebconsulting.com](jacques@kitewebconsulting.com)
 
@@ -24,7 +23,9 @@ Usage
 In the DB folder is the structure of the database that supports this application. Import the SQL into your database then create a database connection file and save as a file. Once created, import that file into the main processor.php script on line 17.
 
 ### IPs and ShortenerURL
-There are two variables you need to define at the top of the processor.php script, $ips and $shortenerURL.<br />$ips are IP Address that are are allowed to query the REST services.<br/>$shortenerURL is the address of your shortener so the application know to only process redirects from this source.
+There are two variables you need to define at the top of the processor.php script, $ips and $shortenerURL.
+`$ips` are IP Address that are are allowed to query the REST services.
+`$shortenerURL` is the address of your shortener so the application know to only process redirects from this source.
 
 ### URI
 There are 3 action  URIs to this application.
