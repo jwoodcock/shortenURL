@@ -1,5 +1,8 @@
 <?php 
-	$ips = array('69.245.38.50','69.247.134.229','69.245.39.85','98.193.168.44');
+	
+	$ips = array(''); // Define what IP address can create new files
+	$shortenerURL = ''; // The address of your shortener
+	
 	if (in_array($_SERVER['REMOTE_ADDR'],$ips)){
  		error_reporting(-1);
  		$cliID = 'cl_a0120114d2f6ed95f33d6.62251711';
@@ -8,11 +11,13 @@
 		//error_reporting(E_ERROR | E_WARNING | E_PARSE);
 		$cliID = '0';
 	 }
+
 	/* ------------------------------------------------------------------------------------------ */
 	/* Script takes a short url and finds the real up, updates stats and sends to the other page. */
 	/* ------------------------------------------------------------------------------------------ */
+
 	//INCLUDE FUNCTIONS
-	require_once("account/functions/db_connec.php");
+	require_once(""); // DB Connection
 	require_once("includes/functions.php");
 	$error = 0; //error status
 	
@@ -29,7 +34,7 @@
 	$pageA = explode("/",$page); // array for short url or processing api
 	
 	// IF NO PAGE, SEND HOME
-	if (!$page && $_SERVER['REMOTE_ADDR'] != '69.247.134.229' && $_SERVER['HTTP_REFERER'] === 'http://thekit.us/'){
+	if (!$page && in_array($_SERVER['REMOTE_ADDR'],$ips) === false && $_SERVER['HTTP_REFERER'] === $shortenerURL){
 		header('location: http://www.kitportal.com');
 		exit();
 	}
@@ -45,9 +50,6 @@
 		if ($getIn){ $getIn .= ", "; }
 		$postIn .= $gkey."=".$gvalue;
 	}
-	/*$login = "INSERT INTO logging SET dateLogged = NOW(), requestURL = '{$page}', referrer = '{$ip}', postData = '{$postIn}', getData = '{$getIn}'";
-	$loginSQL = mysql_query($login);
-	$loggedId = mysql_insert_id();*/
 	
 	// MAKE SURE $page VARIABLE IS NOT A SQL STATEMENT BY CHECKING THE LENGTH, NONE SHOULD BE OVER 10 CHARACTERS
 	if ($pageA[1]!='api' && $page != "/"){ //PROCESS SHORT API
@@ -58,7 +60,7 @@
 		if ($error == 0){ require_once("includes/url_short_process.php"); }
 	}else if ($pageA[1]=='api'){ //PROCESS API REQUEST
 		require_once("includes/api_process.php");
-	}else if ($_SERVER['REMOTE_ADDR'] == '69.247.134.229'){
+	}else if (in_array($_SERVER['REMOTE_ADDR'],$ips) === true){
 		require_once("includes/url_new.php");
 	}else{
 		$error=1;
